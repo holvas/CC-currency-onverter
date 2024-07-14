@@ -3,6 +3,11 @@ const elementUSD = document.querySelector('[data-value="USD"]'); // знаход
 const elementEUR = document.querySelector('[data-value="EUR"]');
 const elementPLN = document.querySelector('[data-value="PLN"]');
 
+const input = document.querySelector('#input');
+const result = document.querySelector('#result');
+const select = document.querySelector('#select');
+
+
 getCurrencies();
 
 // Беремо вхідні дані (функція, яка отримує api НБУ) 
@@ -25,28 +30,41 @@ async function getCurrencies () {
     elementEUR.textContent = rates.EUR.Value.toFixed(2);
     elementPLN.textContent = rates.PLN.Value.toFixed(2);
 
-    // Перевиряємо курс з попереднім днем
+    // Перевиряємо курс USD з попереднім днем
     if (rates.USD.Value > rates.USD.Previous) {
         elementUSD.classList.add('top'); // додаємо клас top
     } else {
         elementUSD.classList.add('bottom'); // додаємо клас bottom
     }
 
+    // Перевиряємо курс EUR з попереднім днем
     if (rates.EUR.Value > rates.EUR.Previous) {
         elementEUR.classList.add('top'); 
     } else {
         elementEUR.classList.add('bottom');
     }
 
+    // Перевиряємо курс PLN з попереднім днем
     if (rates.PLN.Value > rates.PLN.Previous) {
         elementPLN.classList.add('top'); 
     } else {
         elementPLN.classList.add('bottom');
     }
 
-    
+
 }
 
+// Cлухаємо зміни в input 
+input.oninput = function() {
+    console.log('Changed!');
+    result.value = (parseFloat(input.value) / rates[select.value].Value).toFixed(2);
+}
+
+// Cлухаємо зміни в select 
+select.oninput = function() {
+    console.log('Changed!');
+    result.value = (parseFloat(input.value) / rates[select.value].Value).toFixed(2);
+}
 
 
 // ============================================================================

@@ -1,3 +1,7 @@
+body {
+    background-color: #212529 !important;
+}
+
 .courses {
     display: flex;
     margin-bottom: 15px;
@@ -33,4 +37,9 @@
 
 .course-item-value.bottom {
     color: #09db1b;
+}
+
+.footer__link {
+    margin: 0 15px;
+    color: azure;
 }
