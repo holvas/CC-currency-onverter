@@ -1,23 +1,49 @@
-// Функція, яка отримує api НБУ
-const rates = {};
-const elementUSD = document.querySelector('[data-value="USD"]');
+const rates = {}; // створюємо обєкт необхідних даних з JSON обєкту
+const elementUSD = document.querySelector('[data-value="USD"]'); // знаходимо конкретні діви
 const elementEUR = document.querySelector('[data-value="EUR"]');
 const elementPLN = document.querySelector('[data-value="PLN"]');
 
 getCurrencies();
 
+// Беремо вхідні дані (функція, яка отримує api НБУ) 
 async function getCurrencies () {
     const url = 'https://www.cbr-xml-daily.ru/daily_json.js';
     
-    const response = await fetch(url);
+    const response = await fetch(url); // асинхроне звернення до json (отримуємо Promise)
     const data = await response.json(); // json перетворюємо в обєкт js 
-    const result = await data; //достаємо js обєкт з проміса
+    const result = await data; // достаємо js обєкт з promise
 
+    // будуємо обєкт тільки з трьох валют
     rates.USD = result.Valute.USD;
     rates.EUR = result.Valute.EUR;
     rates.PLN = result.Valute.PLN;
 
     console.log(rates);
+
+    // передаємо дані з api до div
+    elementUSD.textContent = rates.USD.Value.toFixed(2); //скорочуємо число після крапки до 2
+    elementEUR.textContent = rates.EUR.Value.toFixed(2);
+    elementPLN.textContent = rates.PLN.Value.toFixed(2);
+
+    // Перевиряємо курс з попереднім днем
+    if (rates.USD.Value > rates.USD.Previous) {
+        elementUSD.classList.add('top'); // додаємо клас top
+    } else {
+        elementUSD.classList.add('bottom'); // додаємо клас bottom
+    }
+
+    if (rates.EUR.Value > rates.EUR.Previous) {
+        elementEUR.classList.add('top'); 
+    } else {
+        elementEUR.classList.add('bottom');
+    }
+
+    if (rates.PLN.Value > rates.PLN.Previous) {
+        elementPLN.classList.add('top'); 
+    } else {
+        elementPLN.classList.add('bottom');
+    }
+
     
 }
 
